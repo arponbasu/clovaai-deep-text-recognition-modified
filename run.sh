@@ -5,7 +5,9 @@ echo "Package installment complete"
 echo "Installing fonts; Requires sudo privileges ..."
 sudo cp -u dataset_generation/fonts/ /usr/local/share/fonts/
 echo "Font installation complete"
-read -p "Enter the number of images in your dataset: " numImages
+read -t 10 -p "Enter the number of images in your dataset (it will be set to 5000 automatically after 10 seconds): " numImages    
+: ${numImages:=5000}        
+echo "The number of images has been set to $numImages"
 ILPFILE="dataset_generation/ILP/ILP-${numImages}"
 echo "Searching for ILP file ..."
 if [ -f "$ILPFILE" ]; then
@@ -30,13 +32,17 @@ else
 	echo "Your image directory already exists"
 fi
 echo "creating lmdb dataset ..."
-python3 create_lmdb_dataset.py --inputPath "data/PIL-${numImages}" --gtFile "$GTFILE" --outputPath result/
+python3 create_lmdb_dataset.py --inputPath "$PILDIR" --gtFile "$GTFILE" --outputPath result/
 echo "lmdb dataset created"
-read -p "Number of CUDA visible devices: " CUDA_VISIBLE_DEVICES
+read -t 3 -p "Number of CUDA visible devices (it will be set to 0 automatically after 3 seconds): " CUDA_VISIBLE_DEVICES 
+: ${CUDA_VISIBLE_DEVICES:=0}        
 echo "Your GPU details ..."
 nvidia-smi -L
-read -p "Enter the number of iterations for training (default is 4000): " num_iter
-read -p "Enter the path of your starting model (default is default_model/TPS-ResNet-BiLSTM-Attn.pth): " DEFAULT_MODEL
+read -t 10 -p "Enter the number of iterations for training (it will be set to 4000 automatically after 10 seconds): " num_iter 
+: ${num_iter:=4000}
+echo "The number of iterations has been set to $num_iter"        
+read -t 10 -p "Enter the path of your starting model (it will be set to default_model/TPS-ResNet-BiLSTM-Attn.pth automatically after 10 seconds): " DEFAULT_MODEL 
+: ${DEFAULT_MODEL:=default_model/TPS-ResNet-BiLSTM-Attn.pth}
 echo "Beginning training ..."
 python3 CUDA_VISIBLE_DEVICES = "$CUDA_VISIBLE_DEVICES" train.py \
 --train_data result/ --valid_data result/ \
