@@ -34,16 +34,16 @@ INPUTDIR="data/PIL-${numImages}"
 python3 create_lmdb_dataset.py --inputPath "$INPUTDIR" --gtFile data/*.txt --outputPath result/
 echo "lmdb dataset created"
 read -p "Enter the number of iterations for training (default is 4000): " num_iter
-echo "Beginning training ..."
 echo "Your GPU details ..."
 nvidia-smi
+echo "Beginning training ..."
 python3 train.py \
 --train_data result/ --valid_data result/ \
 --select_data '/' --batch_ratio 1.0 --num_iter "$num_iter" \
 --Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
 --character '0123456789ABCDEFGHIJKLMNOPQRSTVWXYZ'  \
 --sensitive --saved_model 'default_model/TPS-ResNet-BiLSTM-Attn.pth' 
-
+echo "Testing models against real life images"
 
 
 
