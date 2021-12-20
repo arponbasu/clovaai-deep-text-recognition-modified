@@ -3,7 +3,7 @@ from numpy import load
 from numpy import zeros
 from numpy import ones
 from numpy.random import randint
-from keras.optimizers import Adam
+from keras.optimizers import adam_v2
 from keras.initializers import RandomNormal
 from keras.models import Model
 from keras.models import Input
@@ -16,7 +16,14 @@ from keras.layers import Dropout
 from keras.layers import BatchNormalization
 from keras.layers import LeakyReLU
 from matplotlib import pyplot
- 
+
+if not os.path.isdir('saved_models'):
+	os.mkdir('saved_models')
+
+if not os.path.isdir('saved_logs'):
+	os.mkdir('saved_logs')
+
+	 
 # define the discriminator model
 def define_discriminator(image_shape):
 	# weight initialization
@@ -52,7 +59,7 @@ def define_discriminator(image_shape):
 	# define model
 	model = Model([in_src_image, in_target_image], patch_out)
 	# compile model
-	opt = Adam(lr=0.0002, beta_1=0.5)
+	opt = adam_v2.Adam(lr=0.0002, beta_1=0.5)
 	model.compile(loss='binary_crossentropy', optimizer=opt, loss_weights=[0.5])
 	return model
  
@@ -133,7 +140,7 @@ def define_gan(g_model, d_model, image_shape):
 	# src image as input, generated image and classification output
 	model = Model(in_src, [dis_out, gen_out])
 	# compile model
-	opt = Adam(lr=0.0002, beta_1=0.5)
+	opt = adam_v2.Adam(lr=0.0002, beta_1=0.5)
 	model.compile(loss=['binary_crossentropy', 'mae'], optimizer=opt, loss_weights=[1,100])
 	return model
  
@@ -195,11 +202,11 @@ def summarize_performance(step, g_model, dataset, n_samples=3):
 		pyplot.imshow(X_realB[i])
 	# save plot to file
 	filename1 = 'plot_%06d.png' % (step+1)
-	pyplot.savefig(filename1)
+	pyplot.savefig('saved_logs/' + filename1)
 	pyplot.close()
 	# save the generator model
 	filename2 = 'model_%06d.h5' % (step+1)
-	g_model.save(filename2)
+	g_model.save('saved_models/' + filename2)
 	print('>Saved: %s and %s' % (filename1, filename2))
  
 # train pix2pix models
