@@ -21,6 +21,7 @@ mkdir -p data
 GTFILE="data/ground_truth_${numImages}.txt"
 if [ ! -f "$GTFILE" ]; then
 	touch "$GTFILE"
+	python3 dataset_generation/generate_ground_truth.py "$numImages"
 fi
 PILDIR="data/PIL-${numImages}"
 if [ ! -d "$PILDIR" ];
