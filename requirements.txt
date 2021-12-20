@@ -1,0 +1,25 @@
+fire==0.4.0
+lmdb==0.99
+natsort==5.5.0
+nltk==3.2.5
+numpy==1.21.4
+nvidia-ml-py3==7.352.0
+tensorboard==2.7.0
+tensorboard-data-server==0.6.1
+tensorboard-plugin-wit==1.8.0
+tensorflow @ file:///tensorflow-2.7.0-cp37-cp37m-linux_x86_64.whl
+tensorflow-datasets==4.0.1
+tensorflow-estimator==2.7.0
+tensorflow-gcs-config==2.7.0
+tensorflow-hub==0.12.0
+tensorflow-io-gcs-filesystem==0.22.0
+tensorflow-metadata==1.4.0
+tensorflow-probability==0.15.0
+torch @ https://download.pytorch.org/whl/cu111/torch-1.10.0%2Bcu111-cp37-cp37m-linux_x86_64.whl
+torchaudio @ https://download.pytorch.org/whl/cu111/torchaudio-0.10.0%2Bcu111-cp37-cp37m-linux_x86_64.whl
+torchsummary==1.5.1
+torchtext==0.11.0
+torchvision @ https://download.pytorch.org/whl/cu111/torchvision-0.11.1%2Bcu111-cp37-cp37m-linux_x86_64.whl
+opencv-python==4.5.4.60
+Pillow==8.4.0
+
