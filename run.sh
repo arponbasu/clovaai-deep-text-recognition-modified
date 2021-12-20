@@ -34,8 +34,6 @@ fi
 echo "creating lmdb dataset ..."
 python3 create_lmdb_dataset.py --inputPath "$PILDIR" --gtFile "$GTFILE" --outputPath result/
 echo "lmdb dataset created"
-read -t 3 -p "Number of CUDA visible devices (it will be set to 0 automatically after 3 seconds): " CUDA_VISIBLE_DEVICES 
-: ${CUDA_VISIBLE_DEVICES:=0}        
 echo "Your GPU details ..."
 nvidia-smi -L
 read -t 10 -p "Enter the number of iterations for training (it will be set to 4000 automatically after 10 seconds): " num_iter 
@@ -44,7 +42,7 @@ echo "The number of iterations has been set to $num_iter"
 read -t 10 -p "Enter the path of your starting model (it will be set to default_model/TPS-ResNet-BiLSTM-Attn.pth automatically after 10 seconds): " DEFAULT_MODEL 
 : ${DEFAULT_MODEL:=default_model/TPS-ResNet-BiLSTM-Attn.pth}
 echo "Beginning training ..."
-python3 CUDA_VISIBLE_DEVICES = "$CUDA_VISIBLE_DEVICES" train.py \
+python3 train.py \
 --train_data result/ --valid_data result/ \
 --select_data '/' --batch_ratio 1.0 --num_iter "$num_iter" \
 --Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
@@ -52,7 +50,7 @@ python3 CUDA_VISIBLE_DEVICES = "$CUDA_VISIBLE_DEVICES" train.py \
 --sensitive --saved_model "$DEFAULT_MODEL" 
 echo "Testing models against real life images"
 for filename in saved_models/TPS-ResNet-BiLSTM-Attn-Seed1111/*.pth; do
-    python3 CUDA_VISIBLE_DEVICES = "$CUDA_VISIBLE_DEVICES" demo.py \
+    python3 demo.py \
 	--Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
 	--image_folder test_images/ \
 	--saved_model "$file_name"
