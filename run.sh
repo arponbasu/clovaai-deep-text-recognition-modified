@@ -3,7 +3,7 @@ echo "Installing packages ..."
 pip install -r requirements.txt
 echo "Package installment complete"
 echo "Installing fonts; Requires sudo privileges ..."
-sudo cp -u dataset_generation/fonts/ /usr/local/share/fonts/
+sudo cp -u dataset_generation/fonts/*.ttf /usr/local/share/fonts/
 echo "Font installation complete"
 read -t 10 -p "Enter the number of images in your dataset (it will be set to 5000 automatically after 10 seconds): " numImages    
 : ${numImages:=5000}        
@@ -34,7 +34,6 @@ else
 fi
 echo "creating lmdb dataset ..."
 python3 create_lmdb_dataset.py --inputPath "$PILDIR" --gtFile "$GTFILE" --outputPath result/
-echo "lmdb dataset created"
 echo "Your GPU details ..."
 nvidia-smi -L
 read -t 10 -p "Enter the number of iterations for training (it will be set to 4000 automatically after 10 seconds): " num_iter 
